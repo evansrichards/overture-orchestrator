@@ -6,10 +6,13 @@ description: >-
   `planning/` proposal workspace. Triggers on "write/draft a proposal", "I need
   alignment on…", "log a decision / assumption / open question", "what's the
   status of <proposal>", "publish this to Confluence", "socialize this", "who
-  decides this", "descope that", "hand this off to engineering", and on any
-  `/overture …` command. Keeps markdown in a git repo as the source of truth,
-  keeps private context structurally unpublishable, and batches every question
-  to the user through `AskUserQuestion`.
+  decides this", "cut this from scope but don't lose it", "hand this off to
+  engineering", and on any `/overture …` command. Keeps markdown in a git repo
+  as the source of truth, keeps private context structurally unpublishable, and
+  batches every question to the user through `AskUserQuestion`. Not for
+  engineering execution — tickets, sprints, deploys, code review, or ADRs
+  inside a codebase — and not for summarizing or reformatting a document that
+  isn't a proposal.
 ---
 
 # Planning orchestrator
@@ -39,10 +42,12 @@ init ──▶ frame ──▶ draft ⇄ question / decide / define / assume / e
 
 ## Before anything else
 
-1. **Find the workspace.** Look for `planning/index.md` from the cwd upward. If
-   none exists and the user is asking for planning work, run the first-run
-   wizard — `references/onboarding.md` §First run. Never scaffold a workspace
-   silently.
+1. **Find the workspace.** Walk up the directory chain — cwd, then its parent,
+   and so on to the filesystem root — checking each level for
+   `planning/index.md`. This is a parent walk, not a search: never `find` across
+   the filesystem for it. If no workspace turns up and the user is asking for
+   planning work, run the first-run wizard — `references/onboarding.md`
+   §First run. Never scaffold a workspace silently.
 2. **Attach if a proposal is in play.** `references/commands.md` → `attach`.
    Never edit proposal files without loading the proposal's current state first.
 3. **Read the private zone only for drafting.** `proposals/<slug>/context/` may

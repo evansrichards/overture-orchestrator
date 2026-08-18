@@ -148,7 +148,14 @@ communication, ticket creation, and real-time collaboration.
 claude plugin validate .                      # marketplace + resolved plugin
 claude plugin validate ./skills               # skill components
 sh -n hooks/planning-rehydrate.sh             # hook syntax
+python3 scripts/check-references.py           # internal cross-references
 ```
+
+Triggering is checked separately, since `validate` never reads a description:
+[`evals/`](evals/README.md) runs 20 realistic queries — 9 that should fire the
+plugin, 11 near-misses that shouldn't — through a headless session. It costs
+real money (~$1.50 a run), so it isn't in CI; run it whenever you change a
+description or add a command.
 
 A `version: No version specified` warning is expected — see Versioning. Don't
 use `--strict`; it treats that intentional warning as an error.

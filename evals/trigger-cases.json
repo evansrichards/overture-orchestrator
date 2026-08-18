@@ -1,0 +1,110 @@
+{
+  "entry_points": [
+    "overture-orchestrator:planning-orchestrator",
+    "overture-orchestrator:overture"
+  ],
+  "entry_points_note": "The plugin has two doors: the skill fires on natural language, the command fires when the model reaches for /overture directly. Either counts as triggering \u2014 both route to the same place \u2014 so the eval must accept both or it reports false negatives.",
+  "note": "Should-trigger cases deliberately avoid naming the skill, the command, or the word 'proposal' where a real user wouldn't. Should-not-trigger cases are near-misses: they share vocabulary (decide, status, descope, publish, plan, align, Confluence) but need something else. Cases that are obviously irrelevant test nothing.",
+  "cases": [
+    {
+      "id": "invites-alignment",
+      "should_trigger": true,
+      "query": "I need to get design and eng aligned on reviving our invitations flow before I write anything up. Where do I start?"
+    },
+    {
+      "id": "half-formed-idea",
+      "should_trigger": true,
+      "query": "ok so i have this half-formed idea about letting group admins bulk-invite people and i need to socialize it with the PM and a couple of engineers before our planning cycle. can you help me get it into a shape people can actually react to"
+    },
+    {
+      "id": "log-assumption",
+      "should_trigger": true,
+      "query": "I'm assuming group admins receive invitations by email \u2014 write that down somewhere I won't lose it, it's load-bearing for the whole accounts piece"
+    },
+    {
+      "id": "who-decides",
+      "should_trigger": true,
+      "query": "Sarah and Raj disagree about whether the account code should be required. Who actually decides this and how do I record that we're stuck?"
+    },
+    {
+      "id": "publish-confluence",
+      "should_trigger": true,
+      "query": "can you push the invitations-flow writeup up to Confluence? make sure none of my candid notes about the reorg end up on the page"
+    },
+    {
+      "id": "status-check",
+      "should_trigger": true,
+      "query": "what's outstanding on invitations-flow \u2014 who am I waiting on and what have I not answered yet"
+    },
+    {
+      "id": "cut-scope-keep-it",
+      "should_trigger": true,
+      "query": "we're cutting bulk import from the invitations work but I don't want to just lose it, it'll come back the second a big provider asks"
+    },
+    {
+      "id": "stale-doc-restructure",
+      "should_trigger": true,
+      "query": "there's an old epic in Confluence for the accounts revamp that's a mess \u2014 half the decisions in it are stale. I want to restart it properly as something people will actually read"
+    },
+    {
+      "id": "handoff-to-eng",
+      "should_trigger": true,
+      "query": "the pricing-v2 writeup got approved yesterday. what do the engineers need from me so they have the full trade-off history and not just the summary"
+    },
+    {
+      "id": "near-ticket",
+      "should_trigger": false,
+      "query": "file a ticket for the bug where invitation emails render the wrong org name in the subject line, and assign it to me"
+    },
+    {
+      "id": "near-tech-choice",
+      "should_trigger": false,
+      "query": "should I use Postgres or DynamoDB for the invitations table? expecting maybe 40k rows a day, mostly writes, and we already run RDS"
+    },
+    {
+      "id": "near-sprint-planning",
+      "should_trigger": false,
+      "query": "help me plan out the next sprint \u2014 I've got 6 tickets and two people out, what should we pull in"
+    },
+    {
+      "id": "near-confluence-lookup",
+      "should_trigger": false,
+      "query": "find me the confluence page that documents our oncall rotation, I can never remember the escalation order"
+    },
+    {
+      "id": "near-meeting-notes",
+      "should_trigger": false,
+      "query": "here's the transcript from the accounts sync this morning, can you summarize it into notes I can paste into slack"
+    },
+    {
+      "id": "near-deploy-status",
+      "should_trigger": false,
+      "query": "what's the status of the deploy to staging, did the migration finish"
+    },
+    {
+      "id": "near-descope-ticket",
+      "should_trigger": false,
+      "query": "descope PROJ-4412 down to just the email template change, the rest can wait for next quarter"
+    },
+    {
+      "id": "near-publish-blog",
+      "should_trigger": false,
+      "query": "publish the draft blog post about our auth migration to the engineering blog, it's in content/posts/auth-migration.mdx"
+    },
+    {
+      "id": "near-code-review",
+      "should_trigger": false,
+      "query": "review the diff on my branch and tell me if the invitation expiry logic handles the timezone edge case correctly"
+    },
+    {
+      "id": "near-adr",
+      "should_trigger": false,
+      "query": "add an ADR to the repo documenting why we picked JWT over session cookies \u2014 follow the existing format in docs/adr/"
+    },
+    {
+      "id": "near-doc-formatting",
+      "should_trigger": false,
+      "query": "this readme is a wall of text, can you break it into sections with headers and tighten the intro"
+    }
+  ]
+}

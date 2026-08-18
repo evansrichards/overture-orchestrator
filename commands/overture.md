@@ -1,5 +1,5 @@
 ---
-description: Planning orchestrator — draft, align on, and publish proposals. Usage `/overture <subcommand> [args]`, e.g. `/overture init`, `/overture decide "…"`, `/overture status`, `/overture publish --dry-run`. Run bare for the command map.
+description: Planning orchestrator — draft, align on, and publish proposals. Usage `/overture <subcommand> [args]`, e.g. `/overture init`, `/overture decide "…"`, `/overture status`, `/overture publish --dry-run`. Run bare for the command map. For cross-functional proposals needing alignment — not for engineering execution (tickets, sprints, code review).
 ---
 
 # `/overture $ARGUMENTS`

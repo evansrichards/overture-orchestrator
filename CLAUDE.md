@@ -49,6 +49,12 @@ claude plugin validate ./skills               # skill components
 sh -n hooks/planning-rehydrate.sh             # hook syntax
 ```
 
+**If you change a `description`** — the skill's or the command's — run the
+triggering eval (`evals/README.md`) and report the numbers. A description is the
+whole triggering mechanism, and nothing else in this repo tests it. Tighten it
+against the near-miss cases as a set, never against one failing query; overfitting
+a description to a single phrasing degrades it everywhere else.
+
 Note that `claude plugin validate` checks manifests and component structure — it
 does **not** deeply verify skill frontmatter. The decisive check that a skill,
 command, or hook is actually discovered is an install into an isolated config:
