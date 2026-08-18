@@ -1,0 +1,13 @@
+{
+  "$schema": "https://json.schemastore.org/claude-code-marketplace.json",
+  "name": "overture",
+  "description": "Overture — the planning orchestrator: a proposal workspace for speculative, cross-functional work.",
+  "owner": { "name": "Evan Richards", "email": "evan.s.richards@gmail.com" },
+  "plugins": [
+    {
+      "name": "overture-orchestrator",
+      "source": "./",
+      "description": "Draft, align on, and publish cross-functional proposals, with a structurally private context zone and a leak-check verifier on every outbound path."
+    }
+  ]
+}

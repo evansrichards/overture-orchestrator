@@ -1,0 +1,10 @@
+{
+  "$schema": "https://json.schemastore.org/claude-code-plugin-manifest.json",
+  "name": "overture-orchestrator",
+  "description": "Draft, align on, and publish cross-functional proposals. Markdown in a git repo is the source of truth; Confluence is a one-way render target; private context is structurally unpublishable.",
+  "author": { "name": "Evan Richards", "email": "evan.s.richards@gmail.com" },
+  "homepage": "https://github.com/evansrichards/overture-orchestrator",
+  "repository": "https://github.com/evansrichards/overture-orchestrator",
+  "license": "MIT",
+  "keywords": ["planning", "proposals", "alignment", "decision-records", "confluence"]
+}

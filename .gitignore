@@ -1,0 +1,6 @@
+.DS_Store
+node_modules/
+
+# This repo is the tool, never the workspace. A planning/ directory here is a
+# mistake — ignored so a stray scaffold can't be committed by accident.
+/planning/

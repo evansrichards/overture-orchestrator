@@ -1,0 +1,44 @@
+name: Validate plugin
+
+# Lints the marketplace manifest, the resolved plugin manifest, and the skill /
+# command components on every push to main and every PR. Plain `validate` is
+# used, not `--strict`, because the manifests intentionally omit `version`
+# (updates track the git SHA) and `--strict` would treat that expected warning
+# as an error. Real manifest errors still fail the build.
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    env:
+      CI: "true"
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+
+      - name: Install Claude Code CLI
+        run: npm install -g @anthropic-ai/claude-code
+
+      - name: Validate marketplace and plugin manifests
+        run: claude plugin validate .
+
+      - name: Validate skill and command components
+        run: |
+          claude plugin validate ./skills
+          claude plugin validate ./commands
+
+      - name: Check hook script syntax
+        run: sh -n hooks/planning-rehydrate.sh
+
+      - name: Check hook is executable
+        run: test -x hooks/planning-rehydrate.sh
+
+      - name: Check internal cross-references resolve
+        run: python3 scripts/check-references.py
