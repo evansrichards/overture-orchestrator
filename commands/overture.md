@@ -1,8 +1,8 @@
 ---
-description: Planning orchestrator — draft, align on, and publish proposals. Usage `/plan <subcommand> [args]`, e.g. `/plan init`, `/plan decide "…"`, `/plan status`, `/plan publish --dry-run`. Run bare for the command map.
+description: Planning orchestrator — draft, align on, and publish proposals. Usage `/overture <subcommand> [args]`, e.g. `/overture init`, `/overture decide "…"`, `/overture status`, `/overture publish --dry-run`. Run bare for the command map.
 ---
 
-# `/plan $ARGUMENTS`
+# `/overture $ARGUMENTS`
 
 Dispatch to the **`planning-orchestrator`** skill. Load its `SKILL.md` first —
 it holds the non-negotiables — then load only the reference the subcommand needs,
@@ -20,7 +20,7 @@ Paths below are relative to the skill directory
 - **Unrecognized subcommand** → don't guess and don't invent a new one. Map it to
   the closest real subcommand and confirm via `AskUserQuestion`, or fall back to
   `help`.
-- **Natural language instead of a subcommand** (`/plan I'm assuming admins get
+- **Natural language instead of a subcommand** (`/overture I'm assuming admins get
   email invites`) → map it to the right subcommand, run it, and narrate the
   mapping once (echo teaching, `references/onboarding.md`).
 

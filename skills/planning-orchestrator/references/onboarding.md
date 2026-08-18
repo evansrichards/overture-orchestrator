@@ -10,7 +10,7 @@ commands, because the agent maps natural language to them.
 When the user expresses intent in natural language — *"I'm assuming group admins
 get email invites"* — perform the action **and narrate the mapping**:
 
-> Recording that as an assumption → `/plan assume`. **A-004** created.
+> Recording that as an assumption → `/overture assume`. **A-004** created.
 
 Fluency forms by watching one's own intent get translated, in context.
 
@@ -96,11 +96,11 @@ a stronger onramp than any tutorial. Watch for that moment; don't manufacture it
 
 ## `help` and `tour`
 
-- **`/plan help`** — one-screen command map grouped by lifecycle stage, annotated
-  with the user's own usage from `.onboarding.yml`.
-- **`/plan tour`** — opt-in guided walkthrough on a scratch proposal, for users
-  who explicitly want it. **Never forced**; offer at most once per workspace, and
-  record `tour_completed`.
+- **`/overture help`** — one-screen command map grouped by lifecycle stage,
+  annotated with the user's own usage from `.onboarding.yml`.
+- **`/overture tour`** — opt-in guided walkthrough on a scratch proposal, for
+  users who explicitly want it. **Never forced**; offer at most once per
+  workspace, and record `tour_completed`.
 
 ## Session rehydration
 

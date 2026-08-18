@@ -31,17 +31,17 @@ You never have to memorize a command. Say what you mean —
 
 > *"I'm assuming group admins get invitations by email."*
 
-— and the agent records it and narrates the mapping (`→ /plan assume. A-004
+— and the agent records it and narrates the mapping (`→ /overture assume. A-004
 created.`). Narration decays once you're fluent. The slash commands are
 accelerators, not prerequisites.
 
 | Stage | Commands |
 | ----- | -------- |
-| **Start** | `/plan init` · `/plan attach <slug>` · `/plan frame <statement>` |
-| **Build** | `/plan question` · `decide` · `define` · `assume` · `evidence` · `todo` · `descope` |
-| **Align** | `/plan ask <person>` · `/plan status` · `/plan publish [--dry-run]` |
-| **Finish** | `/plan handoff` |
-| **Meta** | `/plan help` · `/plan tour` |
+| **Start** | `/overture init` · `/overture attach <slug>` · `/overture frame <statement>` |
+| **Build** | `/overture question` · `decide` · `define` · `assume` · `evidence` · `todo` · `descope` |
+| **Align** | `/overture ask <person>` · `/overture status` · `/overture publish [--dry-run]` |
+| **Finish** | `/overture handoff` |
+| **Meta** | `/overture help` · `/overture tour` |
 
 Global flag `--now` asks queued questions immediately instead of batching them
 to the next interaction point.
@@ -87,7 +87,7 @@ skills/
       onboarding.md              #   echo teaching, first run
       templates/                 #   record and document templates
 commands/
-  plan.md                        # the /plan dispatcher
+  overture.md                        # the /overture dispatcher
 hooks/
   hooks.json                     # SessionStart rehydration (auto-loaded)
   planning-rehydrate.sh
@@ -103,7 +103,7 @@ learning curve.
 
 Overture operates on a `planning/` directory in a git repo of your choosing —
 separate from this one. That workspace holds proposals, decision records,
-assumptions, evidence, a glossary, and shared consideration files. `/plan init`
+assumptions, evidence, a glossary, and shared consideration files. `/overture init`
 scaffolds it and walks you through setup.
 
 Placement is decided by radioactivity, not repo ownership:
@@ -130,11 +130,14 @@ pending. Sessions unrelated to proposal work never notice it.
 
 ## Scope
 
-The plugin implements **v1** of [the spec](docs/spec.md). Deferred items (v2)
-are listed in `SKILL.md` so the agent declines them rather than improvising:
-automated comment pull, scheduled ambient polling, related-proposal import,
-audience-variant renders beyond the exec summary, Figma ingestion, and shared
-context-repo extraction.
+The plugin implements **v1** of [the spec](docs/spec.md), with one deliberate
+divergence: the spec writes the command as `/plan`, which this ships as
+`/overture` to avoid colliding with Claude Code's plan mode.
+
+Deferred items (v2) are listed in `SKILL.md` so the agent declines them rather
+than improvising: automated comment pull, scheduled ambient polling,
+related-proposal import, audience-variant renders beyond the exec summary,
+Figma ingestion, and shared context-repo extraction.
 
 Permanently out of scope: bidirectional Confluence sync, auto-sending any
 communication, ticket creation, and real-time collaboration.

@@ -23,7 +23,7 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parent.parent
 SKILL_DIR = ROOT / "skills" / "planning-orchestrator"
 REF_DIR = SKILL_DIR / "references"
-COMMAND = ROOT / "commands" / "plan.md"
+COMMAND_DIR = ROOT / "commands"
 
 # `file.md` followed by an arrow or section mark, then the heading text.
 CITE = re.compile(r"`([a-z0-9-]+\.md)`\s*(?:->|→|§)\s*([^\n.;,)]+)")
@@ -56,9 +56,14 @@ def main():
         normalize(m.group(1)) for m in HEADING.finditer((SKILL_DIR / "SKILL.md").read_text())
     }
 
-    sources = [SKILL_DIR / "SKILL.md", *ref_files]
-    if COMMAND.exists():
-        sources.append(COMMAND)
+    # Glob rather than naming one file: a renamed command must not silently
+    # drop out of coverage, which is exactly what an `if exists()` guard does.
+    command_files = sorted(COMMAND_DIR.glob("*.md"))
+    if not command_files:
+        print(f"FAIL: no command files under {COMMAND_DIR}")
+        return 1
+
+    sources = [SKILL_DIR / "SKILL.md", *ref_files, *command_files]
 
     problems = []
     cited_paths = set()
@@ -95,7 +100,10 @@ def main():
             print(f"  - {problem}")
         return 1
 
-    print(f"OK: {len(ref_files)} reference files, all cited; {checked} heading citations resolve")
+    print(
+        f"OK: {len(ref_files)} reference files, all cited; "
+        f"{len(command_files)} command file(s); {checked} heading citations resolve"
+    )
     return 0
 
 

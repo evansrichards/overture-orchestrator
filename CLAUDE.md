@@ -19,7 +19,7 @@ a `planning/` workspace here.
 | Agent behavior, invariants, routing | `skills/planning-orchestrator/SKILL.md` |
 | Deep protocol for one concern | the matching `references/*.md` |
 | A record or document shape | `references/templates/` |
-| Command surface / dispatch | `commands/plan.md` |
+| Command surface / dispatch | `commands/overture.md` |
 | Session rehydration | `hooks/planning-rehydrate.sh` |
 
 ## Rules for edits
@@ -66,6 +66,10 @@ delete it afterward.
 
 - `docs/spec.md` is the source specification and a historical record. Don't
   rewrite it to match the implementation — if they diverge, say so and ask.
+- **Known deliberate divergence:** the spec writes the command as `/plan`; the
+  plugin ships it as `/overture`, to avoid colliding with Claude Code's plan
+  mode. Every other name follows the spec. Don't "fix" either side toward the
+  other.
 - Manifests intentionally omit `version` (updates track the git SHA). Don't add
   one unless asked to switch to pinned releases.
 - Confirm before outward actions: force-pushing, changing repo settings, or

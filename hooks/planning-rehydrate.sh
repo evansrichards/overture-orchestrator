@@ -3,7 +3,7 @@
 #
 # Re-engagement is the forgotten half of onboarding: a returning user should see
 # "3 inbox items on invitations-flow; one contested decision unowned" without
-# asking. Anything more belongs in `/plan status`, not here.
+# asking. Anything more belongs in `/overture status`, not here.
 #
 # Contract: prints NOTHING and exits 0 unless a `planning/` workspace is present
 # in or above the cwd. It ships in a general-purpose plugin, so a session that
@@ -70,6 +70,6 @@ done
 [ "$total_inbox" -eq 0 ] && [ "$total_unowned" -eq 0 ] && exit 0
 
 # --- Report. --------------------------------------------------------------
-printf 'Planning workspace at %s has pending items:%s\n\nRun `/plan status` to triage, or `/plan attach <slug>` to pick one up.\n' \
+printf 'Planning workspace at %s has pending items:%s\n\nRun `/overture status` to triage, or `/overture attach <slug>` to pick one up.\n' \
   "$ws" "$lines"
 exit 0

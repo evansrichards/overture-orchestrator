@@ -7,9 +7,9 @@ description: >-
   alignment on…", "log a decision / assumption / open question", "what's the
   status of <proposal>", "publish this to Confluence", "socialize this", "who
   decides this", "descope that", "hand this off to engineering", and on any
-  `/plan …` command. Keeps markdown in a git repo as the source of truth, keeps
-  private context structurally unpublishable, and batches every question to the
-  user through `AskUserQuestion`.
+  `/overture …` command. Keeps markdown in a git repo as the source of truth,
+  keeps private context structurally unpublishable, and batches every question
+  to the user through `AskUserQuestion`.
 ---
 
 # Planning orchestrator
@@ -72,7 +72,7 @@ hold the executable protocol.
 
 | Doing this | Load |
 |---|---|
-| Any `/plan` subcommand — exact procedure, flags, preconditions | `references/commands.md` |
+| Any `/overture` subcommand — exact procedure, flags, preconditions | `references/commands.md` |
 | Creating/updating a decision, question, definition, assumption, evidence, descope entry | `references/records.md` |
 | Scaffolding, file layout, `.config.yml`, event-log format, git/private-overlay setup | `references/workspace.md` |
 | Asking the user anything; batching a question queue; interview design | `references/interaction.md` |
@@ -80,7 +80,7 @@ hold the executable protocol.
 | Rendering the artifact, Confluence write, dirty-page guard, reader-cost lint, handoff packet | `references/publishing.md` |
 | Inbox triage, provenance, attribution, comment ingestion, outbound delivery | `references/inbound.md` |
 | Consideration files, glossary, precedent lookup, `catalog.jsonl`, `library/` | `references/context-and-catalog.md` |
-| First run, teaching a concept, `/plan help`, `/plan tour`, narration decay | `references/onboarding.md` |
+| First run, teaching a concept, `/overture help`, `/overture tour`, narration decay | `references/onboarding.md` |
 
 Record and document templates live in `references/templates/`.
 
@@ -89,7 +89,7 @@ Record and document templates live in `references/templates/`.
 The user is never required to memorize commands — map their natural language to
 the action, perform it, and narrate the mapping once:
 
-> Recording that as an assumption → `/plan assume`. **A-004** created.
+> Recording that as an assumption → `/overture assume`. **A-004** created.
 
 Narration **decays**: usage counts live in `planning/.onboarding.yml`. After the
 threshold (default 3 uses), stop explaining that command. Slash commands are
