@@ -110,6 +110,8 @@ delete it afterward.
   `/plan`; the plugin ships it as `/overture`, to avoid colliding with Claude
   Code's plan mode. The Cadence spec's §4 workspace tree lives in the separate
   private data repo — this repo documents and validates it, never contains it.
+  The plugin also adds `/cadence tour` (onboarding), which the Cadence spec's
+  §10 command suite does not define — a requested addition, not an oversight.
   Every other name follows the specs. Don't "fix" either side toward the
   other.
 - Manifests intentionally omit `version` (updates track the git SHA;

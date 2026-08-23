@@ -28,8 +28,8 @@ runs continuously from that handoff.
 1. **Find the workspace.** Walk up the directory chain from cwd — cwd, parent,
    and so on to the root — checking each level for `cadence/config/team.yaml`
    (or `config/team.yaml` if the workspace is the repo root). This is a parent
-   walk, not a search. No workspace → point the user at the plugin's
-   `workspace-template/` and stop; **never scaffold the workspace yourself**
+   walk, not a search. No workspace → run the Phase 0 walkthrough
+   (`references/onboarding.md`); **never scaffold the workspace yourself**
    — it belongs in a private data repo whose creation requires the team
    privacy conversation (`references/privacy.md`).
 2. **Load state before mutating it.** Read the relevant queue records and the
@@ -67,6 +67,20 @@ Violating one is a defect, not a judgment call.
 | Pulling external state, drift report (stub) | `references/sync.md` |
 | Workspace layout, record formats, event log | `references/workspace.md` |
 | Anything crossing the repo boundary; the §11 rules | `references/privacy.md` |
+| First run, `tour`, Phase 0 walkthrough, teaching a concept, narration decay | `references/onboarding.md` |
+
+## Echo teaching
+
+The user never has to memorize subcommands — map their natural language to
+the action, perform it, and narrate the mapping once:
+
+> We just got a P1 → `/cadence intake` (injection). I need the named
+> placement approver before anything cascades.
+
+Narration decays: usage counts live in the workspace's `.onboarding.yml`;
+after the threshold (default 3 uses) stop explaining that command. Rules are
+taught the first time they bite, not front-loaded — the schedule is in
+`references/onboarding.md`.
 
 ## Build-phase discipline
 
