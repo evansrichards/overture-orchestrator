@@ -1,170 +1,79 @@
-# Overture
+# Overture & Cadence
 
-**A proposal workspace for speculative, cross-functional work** — proposals that
-may never ship, or never even be sent.
+A monorepo of two sibling Claude Code plugins — orchestrators for the two
+halves of a software team's planning-to-delivery arc. The repo is also its own
+plugin marketplace (`overture`), so installing either plugin is two commands.
 
-Overture is a Claude Code plugin for drafting, aligning on, and publishing
-proposals of any kind: product, design, engineering, project, or organizational.
-It exists to get stakeholders aligned faster and with better discussion, and to
-leave a durable, readable record of the problem, the reasoning, the decisions,
-and the open questions.
+| Plugin | What it does |
+| ------ | ------------ |
+| [`plugins/overture`](plugins/overture/README.md) | **Planning orchestrator.** Draft, align on, and publish cross-functional proposals. |
+| [`plugins/cadence`](plugins/cadence/README.md) | **Execution orchestrator.** Commitments, capacity, injections, and the ledger behind every date change. |
 
-It is the **upstream sibling** of engineering workflow tooling. When a proposal
-is approved and becomes engineering work, it hands off downstream. Small
-technical tasks — maintenance, security bumps, tweaks — skip planning entirely.
+## Overture
 
-**Not** a project manager, a ticket system, or a knowledge base. It does not
-track execution. It does not replace conversations — it raises their floor.
+Overture is a proposal workspace for speculative, cross-functional work —
+proposals that may never ship, or never even be sent. It drafts, gathers
+decisions, assumptions, and evidence, batches its questions so several
+proposals can run concurrently, and publishes one-way to Confluence with a
+leak-check verifier on every outbound path. Candid notes live in a private
+zone the publish pipeline structurally cannot read. Its terminal artifact — an
+approved proposal with scope, estimates, assumptions, and stakeholders — is
+the handoff point where Cadence picks up. Spec:
+[`plugins/overture/docs/spec.md`](plugins/overture/docs/spec.md).
+
+## Cadence
+
+Cadence tracks execution: an append-only ledger as the source of truth for
+every timeline change, forecasts computed from measured cycle times instead of
+story points, a structured interview that de-aliases every externally-visible
+commitment (what exactly was promised, to whom, by when, minus what), and
+human-approved fan-out of timeline updates to Jira and Confluence. Dates never
+"slip" — conditions change, and each change references the ledger event that
+caused it: an injection, a capacity reservation, or a broken assumption. Spec:
+[`cadence-spec.md`](cadence-spec.md).
+
+## Code here, data elsewhere
+
+**This repo is portable code only** — schemas, commands, prompts, adapters.
+Nothing org-specific, nothing sensitive.
+
+All workspace data lives in a **separate private team repo** that you create
+from Cadence's [`workspace-template/`](plugins/cadence/workspace-template/):
+queue records, the ledger, cycle-time history, calendar and roster config, and
+the accreted probe library. Overture's `planning/` workspace likewise lives in
+a repo of your choosing. The privacy rules for the Cadence data repo — what
+may never leave it, and the team covenant required before adding anyone — are
+in [`cadence-spec.md`](cadence-spec.md) §11.
+
+The two plugins share one file-format contract, not code:
+[`shared/record-schemas/`](shared/record-schemas/README.md) defines the
+commitment record Overture emits at handoff and Cadence consumes at t=0.
 
 ## Install
 
 ```bash
 /plugin marketplace add evansrichards/overture-orchestrator
-/plugin install overture-orchestrator@overture
+/plugin install overture-orchestrator@overture   # planning
+/plugin install cadence-orchestrator@overture    # execution
 ```
 
-The repo is its own marketplace, so the two commands are all it takes.
-
-## Use
-
-You never have to memorize a command. Say what you mean —
-
-> *"I'm assuming group admins get invitations by email."*
-
-— and the agent records it and narrates the mapping (`→ /overture assume. A-004
-created.`). Narration decays once you're fluent. The slash commands are
-accelerators, not prerequisites.
-
-| Stage | Commands |
-| ----- | -------- |
-| **Start** | `/overture init` · `/overture attach <slug>` · `/overture frame <statement>` |
-| **Build** | `/overture question` · `decide` · `define` · `assume` · `evidence` · `todo` · `descope` |
-| **Align** | `/overture ask <person>` · `/overture status` · `/overture publish [--dry-run]` |
-| **Finish** | `/overture handoff` |
-| **Meta** | `/overture help` · `/overture tour` |
-
-Global flag `--now` asks queued questions immediately instead of batching them
-to the next interaction point.
-
-## The five ideas
-
-1. **Markdown in a git repo is the source of truth. Confluence is a render
-   target.** Publishing is one-way and idempotent — no bidirectional-sync
-   tarpit. A dirty-page guard means a human's direct page edit can never be
-   silently clobbered.
-2. **Structural privacy, not behavioral privacy.** Candid notes live in a
-   private zone the publish path *cannot read* — unreachable, not filtered. A
-   separate verifier session leak-checks every outbound artifact against a
-   topics/names denylist, and never sees the private material itself.
-3. **Decisions are the atomic unit.** Questions, definitions, and scope changes
-   are all decision-shaped: proposed → contested → settled. One lifecycle, many
-   views.
-4. **Attention is the scarce resource.** Commands queue and batch; questions
-   reach you through `AskUserQuestion` in 1–3 grouped steps, so several
-   proposals can run concurrently without context-switching.
-5. **Reader cost is a budget.** Making proposals cheap to write must not export
-   the cost to reviewers. Every publish states a scoped, time-estimated ask per
-   audience, and warns when one person's outstanding asks pile up.
+Updates track the git SHA — `/plugin update` picks up every pushed commit. See
+[`CHANGELOG.md`](CHANGELOG.md) for what changed.
 
 ## Layout
 
 ```
-.claude-plugin/
-  marketplace.json               # makes this repo directly installable
-  plugin.json                    # the plugin manifest
-skills/
-  planning-orchestrator/
-    SKILL.md                     # light top-level skill: invariants + routing
-    references/                  # deep protocol, loaded only when relevant
-      workspace.md               #   layout, config, event log, git topology
-      records.md                 #   decisions, assumptions, evidence, definitions
-      commands.md                #   per-subcommand procedures
-      interaction.md             #   AskUserQuestion protocol and batching
-      privacy.md                 #   private zone + leak-check verifier
-      publishing.md              #   render order, dirty-page guard, handoff
-      inbound.md                 #   inbox, triage, outbound delivery
-      context-and-catalog.md     #   consideration files, canon, precedent
-      onboarding.md              #   echo teaching, first run
-      templates/                 #   record and document templates
-commands/
-  overture.md                        # the /overture dispatcher
-hooks/
-  hooks.json                     # SessionStart rehydration (auto-loaded)
-  planning-rehydrate.sh
-docs/
-  spec.md                        # the source specification
+.claude-plugin/marketplace.json   # this repo is the marketplace
+plugins/
+  overture/                       # planning orchestrator (plugin root)
+  cadence/                        # execution orchestrator (plugin root)
+shared/
+  record-schemas/                 # the Overture → Cadence handoff contract (v1)
+cadence-spec.md                   # Cadence source specification
+CHANGELOG.md
 ```
 
-`SKILL.md` is deliberately light (~230 tokens always-on). The references are
-progressive disclosure for the agent: its context economy mirrors the human's
-learning curve.
-
-## The workspace it manages
-
-Overture operates on a `planning/` directory in a git repo of your choosing —
-separate from this one. That workspace holds proposals, decision records,
-assumptions, evidence, a glossary, and shared consideration files. `/overture init`
-scaffolds it and walks you through setup.
-
-Placement is decided by radioactivity, not repo ownership:
-
-| Material | Home |
-| -------- | ---- |
-| Proposals, decisions, definitions, canon, event logs | Enterprise org **private repo** |
-| Private `context/` zones — politics, optics, candid notes | **Never-remote local overlay**, gitignored |
-
-See [`docs/spec.md`](docs/spec.md) §11 for the full reasoning, including the
-residual risks it does *not* solve.
-
-## Hooks
-
-One hook, auto-loaded from `hooks/hooks.json`:
-
-| Event | What it does |
-| ----- | ------------ |
-| `SessionStart` | Reports pending inbox items and unowned contested decisions across a `planning/` workspace. |
-
-It is **silent by default** — no output, exit 0 — unless a `planning/index.md`
-workspace exists in or above the working directory *and* something is actually
-pending. Sessions unrelated to proposal work never notice it.
-
-## Scope
-
-The plugin implements **v1** of [the spec](docs/spec.md), with one deliberate
-divergence: the spec writes the command as `/plan`, which this ships as
-`/overture` to avoid colliding with Claude Code's plan mode.
-
-Deferred items (v2) are listed in `SKILL.md` so the agent declines them rather
-than improvising: automated comment pull, scheduled ambient polling,
-related-proposal import, audience-variant renders beyond the exec summary,
-Figma ingestion, and shared context-repo extraction.
-
-Permanently out of scope: bidirectional Confluence sync, auto-sending any
-communication, ticket creation, and real-time collaboration.
-
-## Develop
-
-```bash
-claude plugin validate .                      # marketplace + resolved plugin
-claude plugin validate ./skills               # skill components
-sh -n hooks/planning-rehydrate.sh             # hook syntax
-python3 scripts/check-references.py           # internal cross-references
-```
-
-Triggering is checked separately, since `validate` never reads a description:
-[`evals/`](evals/README.md) runs 20 realistic queries — 9 that should fire the
-plugin, 11 near-misses that shouldn't — through a headless session. It costs
-real money (~$1.50 a run), so it isn't in CI; run it whenever you change a
-description or add a command.
-
-A `version: No version specified` warning is expected — see Versioning. Don't
-use `--strict`; it treats that intentional warning as an error.
-
-### Versioning
-
-The manifests intentionally omit `version`, so Claude Code tracks the git commit
-SHA and `/plugin update` picks up every pushed commit. Switch to pinned releases
-later with `claude plugin tag` if it ever needs them.
+Each plugin's own README covers its usage, layout, and development checks.
 
 ## License
 

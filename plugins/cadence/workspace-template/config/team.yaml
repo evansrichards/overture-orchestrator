@@ -1,0 +1,22 @@
+# Roster — id and focus_factor ONLY (cadence-spec.md §6.1).
+#
+# focus_factor: the fraction of a nominal day that converts to project work.
+# Seed these as honest guesses; the adaptation loop (/cadence review) proposes
+# revisions from measured history — you approve them via a normal config edit,
+# so git history is the audit trail.
+#
+# Deliberately absent, and not to be added: skill ratings, execution profiles,
+# velocity multipliers. Per-person forecasting emerges from measured history,
+# not asserted config.
+#
+# PRIVACY: focus factors are per-person data. They never leave this repo and
+# no adapter may render them (spec §11).
+
+team:
+  - id: alex
+    role: lead
+    focus_factor: 0.5
+  - id: sam
+    focus_factor: 0.8
+  - id: jordan
+    focus_factor: 0.7

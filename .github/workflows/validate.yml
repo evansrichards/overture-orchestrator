@@ -1,6 +1,6 @@
-name: Validate plugin
+name: Validate plugins
 
-# Lints the marketplace manifest, the resolved plugin manifest, and the skill /
+# Lints the marketplace manifest, the resolved plugin manifests, and the skill /
 # command components on every push to main and every PR. Plain `validate` is
 # used, not `--strict`, because the manifests intentionally omit `version`
 # (updates track the git SHA) and `--strict` would treat that expected warning
@@ -29,16 +29,27 @@ jobs:
       - name: Validate marketplace and plugin manifests
         run: claude plugin validate .
 
-      - name: Validate skill and command components
+      - name: Validate Overture skill and command components
         run: |
-          claude plugin validate ./skills
-          claude plugin validate ./commands
+          claude plugin validate ./plugins/overture/skills
+          claude plugin validate ./plugins/overture/commands
+
+      - name: Validate Cadence skill and command components
+        run: |
+          claude plugin validate ./plugins/cadence/skills
+          claude plugin validate ./plugins/cadence/commands
 
       - name: Check hook script syntax
-        run: sh -n hooks/planning-rehydrate.sh
+        run: sh -n plugins/overture/hooks/planning-rehydrate.sh
 
       - name: Check hook is executable
-        run: test -x hooks/planning-rehydrate.sh
+        run: test -x plugins/overture/hooks/planning-rehydrate.sh
 
-      - name: Check internal cross-references resolve
-        run: python3 scripts/check-references.py
+      - name: Check Overture internal cross-references resolve
+        run: python3 plugins/overture/scripts/check-references.py
+
+      - name: Check record schemas are valid JSON
+        run: |
+          for f in shared/record-schemas/*.schema.json; do
+            python3 -m json.tool "$f" > /dev/null || exit 1
+          done

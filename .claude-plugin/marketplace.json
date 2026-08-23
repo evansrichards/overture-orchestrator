@@ -1,13 +1,18 @@
 {
   "$schema": "https://json.schemastore.org/claude-code-marketplace.json",
   "name": "overture",
-  "description": "Overture — the planning orchestrator: a proposal workspace for speculative, cross-functional work.",
+  "description": "Overture and Cadence — sibling orchestrators: Overture drafts, aligns on, and publishes cross-functional proposals; Cadence tracks execution — commitments, capacity, injections, and the ledger that explains every date change.",
   "owner": { "name": "Evan Richards", "email": "evan.s.richards@gmail.com" },
   "plugins": [
     {
       "name": "overture-orchestrator",
-      "source": "./",
+      "source": "./plugins/overture",
       "description": "Draft, align on, and publish cross-functional proposals, with a structurally private context zone and a leak-check verifier on every outbound path."
+    },
+    {
+      "name": "cadence-orchestrator",
+      "source": "./plugins/cadence",
+      "description": "Track execution state: de-aliased commitments, capacity-aware forecasts from measured cycle times, an append-only ledger behind every date change, and human-approved fan-out to Jira/Confluence."
     }
   ]
 }
