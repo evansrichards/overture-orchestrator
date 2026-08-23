@@ -1,0 +1,75 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/evansrichards/overture-orchestrator/shared/record-schemas/scenario-record.v1.schema.json",
+  "title": "Scenario record (v1)",
+  "description": "The YAML frontmatter of a Cadence scenario record (scenarios/<id>.md) — option modeling for any commitment whose scope was negotiated against a deadline. The record that kills \"wait, I thought we were getting the full version.\" Closure rule: a scenario is not closed until chosen_by is a named human and confirmation links their explicit reply — chosen/chosen_by/chosen_on/confirmation are therefore optional in-schema but required for closure. Source: cadence-spec.md §5.2.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["id", "target", "deadline", "options"],
+  "dependentRequired": {
+    "chosen": ["chosen_by", "chosen_on"],
+    "confirmation": ["chosen"]
+  },
+  "properties": {
+    "id": {
+      "type": "string",
+      "pattern": "^[a-z0-9][a-z0-9-]*$",
+      "description": "Kebab-case scenario id; also the filename stem (scenarios/<id>.md)."
+    },
+    "target": {
+      "type": "string",
+      "minLength": 1,
+      "description": "The commitment being scoped, in plain words."
+    },
+    "deadline": {
+      "type": "string",
+      "minLength": 1,
+      "description": "The date plus its nature, e.g. \"2026-08-24 (external, hard)\"."
+    },
+    "options": {
+      "type": "object",
+      "minProperties": 2,
+      "propertyNames": { "pattern": "^[A-Z]$" },
+      "additionalProperties": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["scope", "forecast_p85", "verdict"],
+        "properties": {
+          "scope": { "type": "string", "minLength": 1 },
+          "forecast_p85": { "type": "string", "format": "date" },
+          "verdict": {
+            "type": "string",
+            "minLength": 1,
+            "description": "Plain-words relation to the deadline: \"meets deadline\", \"misses deadline\", \"slips ~1wk\"."
+          },
+          "deferred": {
+            "type": "array",
+            "items": { "type": "string", "minLength": 1 },
+            "description": "Deferred scope items become first-class queue items linked back to this scenario — they can themselves be displaced later, generating their own ledger history."
+          },
+          "risks": {
+            "type": "array",
+            "items": { "type": "string", "minLength": 1 }
+          }
+        }
+      },
+      "description": "At least two options — a scenario with one option is a decision already made, not a negotiation."
+    },
+    "chosen": {
+      "type": "string",
+      "pattern": "^[A-Z]$",
+      "description": "Key of the chosen option. The option name goes in the commitment record and the confirmation message (§9.2 aliasing check)."
+    },
+    "chosen_by": {
+      "type": "string",
+      "minLength": 1,
+      "description": "A named human, never a role or team."
+    },
+    "chosen_on": { "type": "string", "format": "date" },
+    "confirmation": {
+      "type": "string",
+      "minLength": 1,
+      "description": "Link to the confirmation message AND the stakeholder's explicit reply (§9.5)."
+    }
+  }
+}

@@ -1,0 +1,22 @@
+# External tool config (cadence-spec.md §4).
+#
+# Adapters translate; the core is tool-agnostic. The ledger is authoritative —
+# Jira ranks and Confluence timeline blocks are RENDERED VIEWS of ledger
+# events, never the record itself. /cadence sync pulls state in and surfaces
+# drift; core wins on conflict. All posts go out via /cadence publish, after
+# human approval, under the lead's identity — never a bot's.
+
+jira:
+  project: TEAM            # the authoritative external queue — keep its rank real
+  # item-id ↔ issue-key mappings accumulate here as items are synced:
+  # mappings:
+  #   cancel-flow-plan-x: TEAM-1234
+
+confluence:
+  space: TEAMSPACE
+  # per-project timeline pages the publish adapter renders into:
+  # pages:
+  #   cancel-flow-plan-x: "123456789"   # page id
+
+# calendar:                # optional, one-way sync IN only — never out
+#   source: "https://..."  # team Outlook/Google calendar feed

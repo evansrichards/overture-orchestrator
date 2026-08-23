@@ -1,0 +1,160 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/evansrichards/overture-orchestrator/shared/record-schemas/ledger-event.v1.schema.json",
+  "title": "Ledger event (v1)",
+  "description": "One line of ledger/events.jsonl — the append-only, authoritative record of everything that changes execution state. External tools are projections of these events, never the record itself. Invariants encoded here: every injection names its approver; every estimate_revised references its causal event (the agent must refuse an orphan date change). Source: cadence-spec.md §5.3.",
+  "type": "object",
+  "required": ["type", "ts"],
+  "oneOf": [
+    {
+      "title": "injection",
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["type", "ts", "item", "rank_inserted", "approved_by", "displaced"],
+      "properties": {
+        "type": { "const": "injection" },
+        "ts": { "type": "string", "format": "date-time" },
+        "item": { "type": "string" },
+        "rank_inserted": { "type": "integer", "minimum": 1 },
+        "approved_by": {
+          "type": "string",
+          "minLength": 1,
+          "description": "The named priority-placement approver. Required — /cadence intake refuses to cascade an injection without one (spec §10, eval 5)."
+        },
+        "displaced": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["item", "shift_days"],
+            "properties": {
+              "item": { "type": "string" },
+              "shift_days": { "type": "number" }
+            }
+          },
+          "description": "Every in-flight/queued item this injection pushed, with the shift. May be empty if inserted at the tail."
+        }
+      }
+    },
+    {
+      "title": "capacity_reservation",
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["type", "ts", "who", "amount_days", "window", "reason", "approved_by"],
+      "properties": {
+        "type": { "const": "capacity_reservation" },
+        "ts": { "type": "string", "format": "date-time" },
+        "who": {
+          "type": "array",
+          "items": { "type": "string" },
+          "minItems": 1,
+          "description": "Roster ids."
+        },
+        "amount_days": { "type": "number", "exclusiveMinimum": 0 },
+        "window": {
+          "type": "string",
+          "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}\\.\\.[0-9]{4}-[0-9]{2}-[0-9]{2}$",
+          "description": "Inclusive date range, e.g. \"2026-09-08..2026-09-09\"."
+        },
+        "reason": {
+          "type": "string",
+          "minLength": 1,
+          "description": "Why the reservation is elevated above baseline drag (double-count guard, spec §6.3)."
+        },
+        "approved_by": { "type": "string", "minLength": 1 },
+        "impact": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["item", "old", "new"],
+            "properties": {
+              "item": { "type": "string" },
+              "old": { "type": "string", "format": "date" },
+              "new": { "type": "string", "format": "date" }
+            }
+          }
+        }
+      }
+    },
+    {
+      "title": "assumption_broken",
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["type", "ts", "item", "assumption_id", "source"],
+      "properties": {
+        "type": { "const": "assumption_broken" },
+        "ts": { "type": "string", "format": "date-time" },
+        "item": { "type": "string" },
+        "assumption_id": {
+          "type": "string",
+          "description": "Id from the commitment record's assumptions list, e.g. \"a2\"."
+        },
+        "source": {
+          "type": "string",
+          "minLength": 1,
+          "description": "What broke it, e.g. \"API team slipped to Aug 17\"."
+        }
+      }
+    },
+    {
+      "title": "estimate_revised",
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["type", "ts", "item", "old_p85", "new_p85", "reason_event"],
+      "properties": {
+        "type": { "const": "estimate_revised" },
+        "ts": { "type": "string", "format": "date-time" },
+        "item": { "type": "string" },
+        "old_p85": { "type": "string", "format": "date" },
+        "new_p85": { "type": "string", "format": "date" },
+        "reason_event": {
+          "type": "string",
+          "minLength": 1,
+          "description": "ts (or ts+index) of the causal event. MUST reference one — dates never slip, conditions change. The agent refuses to record an orphan date change (eval 4)."
+        }
+      }
+    },
+    {
+      "title": "started",
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["type", "ts", "item"],
+      "properties": {
+        "type": { "const": "started" },
+        "ts": { "type": "string", "format": "date-time" },
+        "item": { "type": "string" }
+      }
+    },
+    {
+      "title": "delivered",
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["type", "ts", "item", "scope_delta"],
+      "properties": {
+        "type": { "const": "delivered" },
+        "ts": { "type": "string", "format": "date-time" },
+        "item": { "type": "string" },
+        "scope_delta": {
+          "type": "string",
+          "description": "\"none\", or a reference to the scenario record explaining what shipped vs. what was committed."
+        }
+      }
+    },
+    {
+      "title": "precondition_resolved",
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["type", "ts", "item", "precondition"],
+      "properties": {
+        "type": { "const": "precondition_resolved" },
+        "ts": { "type": "string", "format": "date-time" },
+        "item": { "type": "string" },
+        "precondition": {
+          "type": "string",
+          "description": "The precondition's text (or a stable prefix of it) from the commitment record."
+        }
+      }
+    }
+  ]
+}

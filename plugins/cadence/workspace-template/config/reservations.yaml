@@ -1,0 +1,14 @@
+# Recurring capacity reservations (cadence-spec.md §6.3).
+#
+# One-off reservations go through `/cadence reserve` (they land in the ledger,
+# not here). Recurring ones live in this file.
+#
+# DOUBLE-COUNT GUARD: ambient trickle work is already priced into measured
+# cycle times (baseline drag). Rule of thumb — visible and elevated → explicit
+# reservation (appears in ledger and impact statements); ambient trickle →
+# learned drag, no entry here. Reserve only the ELEVATED portion.
+
+recurring:
+  - name: ktlo-baseline
+    fraction: 0.10        # 10% of each sprint
+    applies_to: team

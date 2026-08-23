@@ -1,0 +1,10 @@
+{
+  "$schema": "https://json.schemastore.org/claude-code-plugin-manifest.json",
+  "name": "cadence-orchestrator",
+  "description": "Track execution state: de-aliased commitments, capacity-aware forecasts from measured cycle times, an append-only ledger behind every date change, and human-approved fan-out to Jira/Confluence. Per-person data never leaves the team's private data repo.",
+  "author": { "name": "Evan Richards", "email": "evan.s.richards@gmail.com" },
+  "homepage": "https://github.com/evansrichards/overture-orchestrator",
+  "repository": "https://github.com/evansrichards/overture-orchestrator",
+  "license": "MIT",
+  "keywords": ["execution", "commitments", "capacity", "forecasting", "ledger", "jira", "confluence"]
+}

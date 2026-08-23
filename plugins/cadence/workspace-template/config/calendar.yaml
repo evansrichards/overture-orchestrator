@@ -1,0 +1,22 @@
+# Absence / oncall overlay (cadence-spec.md §6.2).
+#
+# HALF-DAY IS THE MINIMUM UNIT. Sub-half-day absence (appointments, slow sick
+# mornings) is intentionally untracked — the learned baseline drag absorbs it.
+# Do not add finer granularity.
+#
+# NO REASONS, EVER. `type` is one of: pto | partial | oncall. Write
+# "type: partial", never "doctor's appointment". This file may sync one-way IN
+# from a team calendar; it never syncs out (spec §11).
+
+absences:
+  - who: sam
+    from: 2026-09-14
+    to: 2026-09-25
+    type: pto
+
+holidays: [2026-09-07]
+
+oncall:
+  - who: jordan
+    window: 2026-08-31..2026-09-06
+    focus_factor_override: 0.4

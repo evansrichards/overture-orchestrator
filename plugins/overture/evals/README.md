@@ -30,7 +30,8 @@ obviously-irrelevant queries would prove nothing.
 ./run-trigger-eval.py --json results.json      # full results to a file
 ```
 
-Each case runs `claude -p` headless with `--plugin-dir` pointing at this repo,
+Each case runs `claude -p` headless with `--plugin-dir` pointing at the plugin
+directory (`plugins/overture/`),
 allows only the `Skill` tool, and caps the run at 2 turns — so each case is one
 decision ("consult the plugin or not"), not a whole task. Exit code is 1 if any
 case fails.

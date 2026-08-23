@@ -1,0 +1,118 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/evansrichards/overture-orchestrator/shared/record-schemas/commitment-record.v1.schema.json",
+  "title": "Commitment record (v1)",
+  "description": "The YAML frontmatter of a Cadence queue item (queue/<item-id>.md). This is the Overture → Cadence handoff contract: Overture emits it as its terminal artifact at handoff; Cadence consumes it at t=0 and mutates it thereafter. The prose body below the frontmatter carries the scope summary (explicit ins AND outs) and links to spec/thread — not validated here. Source: cadence-spec.md §5.1.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "id",
+    "title",
+    "status",
+    "rank",
+    "size",
+    "work_type",
+    "dependency_profile",
+    "owner"
+  ],
+  "dependentRequired": {
+    "external_deadline": ["deadline_authority"]
+  },
+  "properties": {
+    "id": {
+      "type": "string",
+      "pattern": "^[a-z0-9][a-z0-9-]*$",
+      "description": "Kebab-case item id; also the queue filename stem (queue/<id>.md)."
+    },
+    "title": {
+      "type": "string",
+      "minLength": 1
+    },
+    "status": {
+      "enum": ["queued", "in_flight", "delivered", "deferred"]
+    },
+    "rank": {
+      "type": "integer",
+      "minimum": 1,
+      "description": "Position in the authoritative queue."
+    },
+    "size": {
+      "enum": ["S", "M", "L"],
+      "description": "Coarse, deliberately. No story points anywhere in the core (spec §7)."
+    },
+    "work_type": {
+      "enum": ["build", "design", "coordinate"]
+    },
+    "dependency_profile": {
+      "enum": ["self-contained", "needs-review", "cross-team", "needs-legal"],
+      "description": "Load-bearing for forecasting: coordination cost does not compress with skill (spec §7)."
+    },
+    "owner": {
+      "type": "string",
+      "minLength": 1,
+      "description": "Roster id from the workspace's config/team.yaml."
+    },
+    "external_deadline": {
+      "type": "string",
+      "format": "date",
+      "description": "Only if a real external date exists. Requires deadline_authority."
+    },
+    "deadline_authority": {
+      "type": "string",
+      "minLength": 1,
+      "description": "Who set the deadline and via what channel, e.g. \"VP Product, via PM (Slack 7/28)\"."
+    },
+    "scenario": {
+      "type": "string",
+      "pattern": "^scenarios/[a-z0-9][a-z0-9-]*\\.md$",
+      "description": "Link to the scenario record if this commitment's scope was negotiated against a deadline (§5.2)."
+    },
+    "assumptions": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["id", "text"],
+        "properties": {
+          "id": { "type": "string", "pattern": "^a[0-9]+$" },
+          "text": { "type": "string", "minLength": 1 }
+        }
+      },
+      "description": "Referenced by assumption_broken ledger events via id."
+    },
+    "preconditions": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["text", "owner", "status"],
+        "properties": {
+          "text": { "type": "string", "minLength": 1 },
+          "owner": {
+            "type": "string",
+            "minLength": 1,
+            "description": "Whose calendar the unblock sits on — may be outside the team (e.g. legal@)."
+          },
+          "forecast": { "type": "string", "format": "date" },
+          "status": { "enum": ["open", "resolved"] }
+        }
+      },
+      "description": "Typed blockers with owners (§9.3). An unresolved precondition past its forecast shifts the dependent item and writes the causal ledger event."
+    },
+    "forecast": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["p50", "p85", "basis"],
+      "properties": {
+        "p50": { "type": "string", "format": "date" },
+        "p85": { "type": "string", "format": "date" },
+        "basis": {
+          "type": "string",
+          "minLength": 1,
+          "description": "What makes the estimate defensible, e.g. \"team median, size M, cross-team profile (n=12)\" or \"seeded\" during cold start."
+        }
+      },
+      "description": "Computed by Cadence; absent on a freshly handed-off record until the first calendar walk."
+    }
+  }
+}

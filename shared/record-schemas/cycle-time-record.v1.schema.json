@@ -1,0 +1,40 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/evansrichards/overture-orchestrator/shared/record-schemas/cycle-time-record.v1.schema.json",
+  "title": "Cycle-time record (v1)",
+  "description": "One line of history/cycle-times.jsonl, written automatically on every delivered event. Raw and fine-grained; models stay coarse — any future model can be built from raw history retroactively, the reverse is impossible. PRIVACY: per-person, so it never leaves the private data repo and no adapter may render it (cadence-spec.md §11). Source: cadence-spec.md §5.4.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "item",
+    "owner",
+    "size",
+    "work_type",
+    "dependency_profile",
+    "actual_days",
+    "started",
+    "delivered"
+  ],
+  "properties": {
+    "item": { "type": "string" },
+    "owner": { "type": "string" },
+    "size": { "enum": ["S", "M", "L"] },
+    "work_type": { "enum": ["build", "design", "coordinate"] },
+    "dependency_profile": {
+      "enum": ["self-contained", "needs-review", "cross-team", "needs-legal"]
+    },
+    "forecast_p50_days": {
+      "type": "number",
+      "minimum": 0,
+      "description": "The forecast at start time, kept for forecast-vs-actual deltas (adaptation loop, spec §8). Absent if the item was never forecast (e.g. logged pre-Cadence)."
+    },
+    "actual_days": { "type": "number", "exclusiveMinimum": 0 },
+    "started": { "type": "string", "format": "date-time" },
+    "delivered": { "type": "string", "format": "date-time" },
+    "preempted_days": {
+      "type": "number",
+      "minimum": 0,
+      "description": "Days lost to displacement while in flight — lets the forecaster separate execution time from thrash."
+    }
+  }
+}
