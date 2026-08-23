@@ -16,7 +16,9 @@ Paths below are relative to the skill directory
 `$ARGUMENTS` is `<subcommand> [args]`.
 
 - **No arguments** → print the command map below with one-line descriptions
-  and the current build-phase state (which commands are stubs).
+  and the current build-phase state (which commands are stubs). If the
+  workspace's `.onboarding.yml` is absent or lacks `tour_offered: true`,
+  offer the tour once (`references/onboarding.md`).
 - **Unrecognized subcommand** → don't guess and don't invent one. Map it to
   the closest real subcommand and confirm via `AskUserQuestion`.
 - **Natural language instead of a subcommand** (`/cadence we just got a P1
@@ -35,6 +37,7 @@ Paths below are relative to the skill directory
 | `publish` | `references/publish.md` | stub — approval gate + privacy firewall binding |
 | `review` | `references/review.md` | stub |
 | `sync` | `references/sync.md` | stub |
+| `tour` | `references/onboarding.md` | implemented — concept walk + Phase 0 walkthrough |
 
 ## Hold these regardless of subcommand
 

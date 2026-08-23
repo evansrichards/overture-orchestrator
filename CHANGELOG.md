@@ -5,6 +5,27 @@ Notable changes to this repo. The plugin manifests intentionally omit
 every entry here as soon as it lands on `main`. Entries are dated, newest
 first.
 
+## 2026-08-23 — Cadence onboarding (`/cadence tour`)
+
+### Added
+
+- **`/cadence tour`** — Cadence's onboarding entry point, mirroring
+  Overture's pattern: a one-screen-per-stop concept walk (ledger-is-truth,
+  the private data repo, interview tiers, the config surface, the working
+  loop, what's stubbed), and a **guided Phase 0 walkthrough** when no
+  workspace exists yet — it checklists the privacy conversation, template
+  copy, config fill-in, and first ledger events, and *validates* the copied
+  workspace against the template and schemas, but never creates it (repo
+  creation and the §11 conversation stay human acts). A bare `/cadence`
+  offers the tour once.
+- **Echo teaching with narration decay** for Cadence: natural language maps
+  to subcommands with the mapping narrated until fluency (usage counts in
+  the workspace's `.onboarding.yml`, threshold 3), and each refusal rule is
+  taught the first time it bites rather than front-loaded.
+
+Note: `tour` is an addition beyond the spec's §10 command suite, added by
+request; the spec is unchanged.
+
 ## 2026-08-23 — Monorepo restructure + Cadence scaffold
 
 **No action needed for existing Overture users.** The marketplace name

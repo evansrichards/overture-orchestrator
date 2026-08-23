@@ -100,6 +100,7 @@ etiquette:
 | `/cadence publish` | **Stub** — approval-gate structure and the privacy firewall are already specified. |
 | `/cadence review` | **Stub** — adaptation loop (spec §8). |
 | `/cadence sync` | **Stub** — adapter pull, drift surfaced not merged (spec §10). |
+| `/cadence tour` | Onboarding: the concept walk, plus a guided Phase 0 walkthrough when no workspace exists yet. |
 
 ## Install
 
@@ -109,6 +110,10 @@ etiquette:
 ```
 
 ## Getting started (Phase 0 — outside this repo)
+
+Run **`/cadence tour`** for a guided version of the steps below — it walks
+the concepts in usage order and checklists Phase 0 with you (it validates
+your copied workspace, but never creates it: step 2 stays a human act).
 
 1. Create the private team data repo; copy `workspace-template/` into it.
 2. Have the team privacy conversation and state the §11 covenant at repo
